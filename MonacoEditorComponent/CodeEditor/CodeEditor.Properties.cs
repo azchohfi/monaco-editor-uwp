@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
+using System.Threading.Tasks;
 
 namespace Monaco
 {
@@ -120,13 +121,22 @@ namespace Monaco
             (d as CodeEditor).Options.GlyphMargin = e.NewValue as bool?;
         }));
 
+        private IObservableVector<IModelDeltaDecoration> _decorations = null;
+
         /// <summary>
         /// Gets or sets text Decorations.
         /// </summary>
         public IObservableVector<IModelDeltaDecoration> Decorations
         {
-            get => (IObservableVector<IModelDeltaDecoration>)GetValue(DecorationsProperty);
-            set => SetValue(DecorationsProperty, value);
+            //get => (IObservableVector<IModelDeltaDecoration>)GetValue(DecorationsProperty);
+            //set => SetValue(DecorationsProperty, value);
+            get => _decorations;
+            set
+            {
+                var oldValue = _decorations;
+                _decorations = value;
+                _ = DecorationsPropertyChanged(oldValue, value);
+            }
         }
 
         private readonly AsyncLock _mutexLineDecorations = new AsyncLock();
@@ -143,34 +153,40 @@ namespace Monaco
             }
         }
 
-        public static DependencyProperty DecorationsProperty { get; } = DependencyProperty.Register(nameof(Decorations), typeof(IModelDeltaDecoration), typeof(CodeEditor), new PropertyMetadata(null, async (d, e) =>
+        //public static DependencyProperty DecorationsProperty { get; } = DependencyProperty.Register(nameof(Decorations), typeof(IObservableVector<IModelDeltaDecoration>), typeof(CodeEditor), new PropertyMetadata(null, async (d, e) =>
+        //{
+        //    if (d is CodeEditor editor)
+        //    {
+        //        await editor.DecorationsPropertyChanged(e.OldValue, e.NewValue);
+        //    }
+        //}));
+
+        private async Task DecorationsPropertyChanged(object oldValue, object newValue)
         {
-            if (d is CodeEditor editor)
+            // We only want to do this one at a time per editor.
+            using (await _mutexLineDecorations.LockAsync())
             {
-                // We only want to do this one at a time per editor.
-                using (await editor._mutexLineDecorations.LockAsync())
+                var old = oldValue as IObservableVector<IModelDeltaDecoration>;
+                // Clear out the old line decorations if we're replacing them or setting back to null
+                if ((old != null && old.Count > 0) || newValue == null)
                 {
-                    var old = e.OldValue as IObservableVector<IModelDeltaDecoration>;
-                    // Clear out the old line decorations if we're replacing them or setting back to null
-                    if ((old != null && old.Count > 0) ||
-                             e.NewValue == null)
+                    await DeltaDecorationsHelperAsync(null);
+                }
+
+                if (newValue is IObservableVector<IModelDeltaDecoration> value)
+                {
+                    if (value.Count > 0)
                     {
-                        await editor.DeltaDecorationsHelperAsync(null);
+                        await DeltaDecorationsHelperAsync(value.ToArray());
                     }
 
-                    if (e.NewValue is IObservableVector<IModelDeltaDecoration> value)
-                    {
-                        if (value.Count > 0)
-                        {
-                            await editor.DeltaDecorationsHelperAsync(value.ToArray());
-                        }
-
-                        value.VectorChanged -= editor.Decorations_VectorChanged;
-                        value.VectorChanged += editor.Decorations_VectorChanged;
-                    }
+                    value.VectorChanged -= Decorations_VectorChanged;
+                    value.VectorChanged += Decorations_VectorChanged;
                 }
             }
-        }));
+        }
+
+        private IObservableVector<IMarkerData> _markers = null;
 
         /// <summary>
         /// Gets or sets the hint Markers.
@@ -178,8 +194,15 @@ namespace Monaco
         /// </summary>
         public IObservableVector<IMarkerData> Markers
         {
-            get => (IObservableVector<IMarkerData>)GetValue(MarkersProperty);
-            set => SetValue(MarkersProperty, value);
+            //get => (IObservableVector<IMarkerData>)GetValue(MarkersProperty);
+            //set => SetValue(MarkersProperty, value);
+            get => _markers;
+            set
+            {
+                var oldValue = _markers;
+                _markers = value;
+                _ = MarkersPropertyChanged(oldValue, value);
+            }
         }
 
         private readonly AsyncLock _mutexMarkers = new AsyncLock();
@@ -196,34 +219,39 @@ namespace Monaco
             }
         }
 
-        public static DependencyProperty MarkersProperty { get; } = DependencyProperty.Register(nameof(Markers), typeof(IMarkerData), typeof(CodeEditor), new PropertyMetadata(null, async (d, e) =>
+        //public static DependencyProperty MarkersProperty { get; } = DependencyProperty.Register(nameof(Markers), typeof(IObservableVector<IMarkerData>), typeof(CodeEditor), new PropertyMetadata(null, async (d, e) =>
+        //{
+        //    if (d is CodeEditor editor)
+        //    {
+        //        await editor.MarkersPropertyChanged(e.OldValue, e.NewValue);
+        //    }
+        //}));
+
+        private async Task MarkersPropertyChanged(object oldValue, object newValue)
         {
-            if (d is CodeEditor editor)
+            // We only want to do this one at a time per editor.
+            using (await _mutexMarkers.LockAsync())
             {
-                // We only want to do this one at a time per editor.
-                using (await editor._mutexMarkers.LockAsync())
+                var old = oldValue as IObservableVector<IMarkerData>;
+                // Clear out the old markers if we're replacing them or setting back to null
+                if ((old != null && old.Count > 0) ||
+                         newValue == null)
                 {
-                    var old = e.OldValue as IObservableVector<IMarkerData>;
-                    // Clear out the old markers if we're replacing them or setting back to null
-                    if ((old != null && old.Count > 0) ||
-                             e.NewValue == null)
+                    // TODO: Can I simplify this in this case?
+                    await SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
+                }
+
+                if (newValue is IObservableVector<IMarkerData> value)
+                {
+                    if (value.Count > 0)
                     {
-                        // TODO: Can I simplify this in this case?
-                        await editor.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
+                        await SetModelMarkersAsync("CodeEditor", value.ToArray());
                     }
 
-                    if (e.NewValue is IObservableVector<IMarkerData> value)
-                    {
-                        if (value.Count > 0)
-                        {
-                            await editor.SetModelMarkersAsync("CodeEditor", value.ToArray());
-                        }
-
-                        value.VectorChanged -= editor.Markers_VectorChanged;
-                        value.VectorChanged += editor.Markers_VectorChanged;
-                    }
+                    value.VectorChanged -= Markers_VectorChanged;
+                    value.VectorChanged += Markers_VectorChanged;
                 }
             }
-        }));
+        }
     }
 }

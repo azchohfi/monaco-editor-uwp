@@ -99,7 +99,11 @@ namespace Monaco
 
         public IAsyncAction AddActionAsync(IActionDescriptor action)
         {
+#if WINDOWS_UWP
+            var wref = new System.WeakReference<CodeEditor>(this);
+#else
             var wref = new WinRT.WeakReference<CodeEditor>(this);
+#endif
             _parentAccessor.RegisterAction("Action" + action.Id, new Action(() => { if (wref.TryGetTarget(out CodeEditor editor)) { action?.Run(editor, null); } }));
             return ExecuteScriptAsync("addAction", action).AsAsyncAction();
         }

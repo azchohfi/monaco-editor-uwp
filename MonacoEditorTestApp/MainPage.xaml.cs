@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.System;
 using System.IO;
 using Windows.ApplicationModel;
+using Windows.Storage;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -58,7 +59,11 @@ namespace MonacoEditorTestApp
         {
             if (string.IsNullOrWhiteSpace(CodeContent))
             {
+#if WINDOWS_UWP
+                CodeContent = await FileIO.ReadTextAsync(await StorageFile.GetFileFromApplicationUriAsync(new System.Uri("ms-appx:///Content.txt")));
+#else
                 CodeContent = File.ReadAllText(Path.Combine(Package.Current.InstalledLocation.Path, @"MonacoEditorTestApp/Content.txt"));
+#endif
 
                 ButtonHighlightRange_Click(null, null);
             }

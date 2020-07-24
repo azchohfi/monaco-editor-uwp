@@ -5,7 +5,11 @@ namespace Monaco.Editor
     public sealed class ContextKey : IContextKey
     {
         [JsonIgnore]
+#if WINDOWS_UWP
+        private readonly System.WeakReference<CodeEditor> _editor;
+#else
         private readonly WinRT.WeakReference<CodeEditor> _editor;
+#endif
 
         [JsonProperty("key")]
         public string Key { get; private set; }
@@ -16,7 +20,11 @@ namespace Monaco.Editor
 
         internal ContextKey(CodeEditor editor, string key, bool defaultValue)
         {
+#if WINDOWS_UWP
+            _editor = new System.WeakReference<CodeEditor>(editor);
+#else
             _editor = new WinRT.WeakReference<CodeEditor>(editor);
+#endif
 
             Key = key;
             DefaultValue = defaultValue;

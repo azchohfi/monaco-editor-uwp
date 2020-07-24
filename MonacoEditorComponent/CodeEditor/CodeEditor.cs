@@ -3,7 +3,11 @@ using Monaco.Editor;
 using Monaco.Extensions;
 using Monaco.Helpers;
 using System;
+#if WINDOWS_UWP
+using Microsoft.UI.Xaml.Data;
+#else
 using System.ComponentModel;
+#endif
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;

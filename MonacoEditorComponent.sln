@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30030.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonacoEditorComponent", "MonacoEditorComponent\MonacoEditorComponent.csproj", "{DD49485C-2D9B-4824-B64E-52193B43E4CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonacoEditorTestApp", "MonacoEditorTestApp\MonacoEditorTestApp.csproj", "{854C0817-09CA-4052-8C6F-0717C2721063}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonacoEditorTestApp", "MonacoEditorTestApp\MonacoEditorTestApp.csproj", "{854C0817-09CA-4052-8C6F-0717C2721063}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C810EDD0-CB55-4B22-AA18-A6C8B3C29FBC}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "MonacoEditorTestApp.Package", "MonacoEditorTestApp.Package\MonacoEditorTestApp.Package.wapproj", "{A8D3A7B3-CFA7-4D98-B2CF-A37722FD3A41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonacoEditorTestApp.UWP", "MonacoEditorTestApp.UWP\MonacoEditorTestApp.UWP.csproj", "{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,6 +104,32 @@ Global
 		{A8D3A7B3-CFA7-4D98-B2CF-A37722FD3A41}.Release|x86.ActiveCfg = Release|x86
 		{A8D3A7B3-CFA7-4D98-B2CF-A37722FD3A41}.Release|x86.Build.0 = Release|x86
 		{A8D3A7B3-CFA7-4D98-B2CF-A37722FD3A41}.Release|x86.Deploy.0 = Release|x86
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|ARM.ActiveCfg = Debug|ARM
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|ARM.Build.0 = Debug|ARM
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|ARM.Deploy.0 = Debug|ARM
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|ARM64.Build.0 = Debug|ARM64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|x64.ActiveCfg = Debug|x64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|x64.Build.0 = Debug|x64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|x64.Deploy.0 = Debug|x64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|x86.ActiveCfg = Debug|x86
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|x86.Build.0 = Debug|x86
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Debug|x86.Deploy.0 = Debug|x86
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|Any CPU.ActiveCfg = Release|x86
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|ARM.ActiveCfg = Release|ARM
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|ARM.Build.0 = Release|ARM
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|ARM.Deploy.0 = Release|ARM
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|ARM64.ActiveCfg = Release|ARM64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|ARM64.Build.0 = Release|ARM64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|ARM64.Deploy.0 = Release|ARM64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|x64.ActiveCfg = Release|x64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|x64.Build.0 = Release|x64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|x64.Deploy.0 = Release|x64
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|x86.ActiveCfg = Release|x86
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|x86.Build.0 = Release|x86
+		{D53559FC-E4C2-4CCC-84D3-9ACE5895B8F0}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

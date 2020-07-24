@@ -12,11 +12,19 @@ namespace Monaco.Editor
     /// </summary>
     public sealed class ModelHelper : IModel
     {
+#if WINDOWS_UWP
+        private readonly System.WeakReference<CodeEditor> _editor;
+#else
         private readonly WinRT.WeakReference<CodeEditor> _editor;
+#endif
 
         public ModelHelper(CodeEditor editor)
         {
+#if WINDOWS_UWP
+            _editor = new System.WeakReference<CodeEditor>(editor);
+#else
             _editor = new WinRT.WeakReference<CodeEditor>(editor);
+#endif
         }
 
         public string Id => throw new NotImplementedException();

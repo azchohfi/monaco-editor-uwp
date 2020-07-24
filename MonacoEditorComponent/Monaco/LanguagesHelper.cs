@@ -12,13 +12,21 @@ namespace Monaco
     /// </summary>
     public sealed class LanguagesHelper
     {
+#if WINDOWS_UWP
+        private readonly System.WeakReference<CodeEditor> _editor;
+#else
         private readonly WinRT.WeakReference<CodeEditor> _editor;
+#endif
 
         public LanguagesHelper(CodeEditor editor)
         {
             // We need the editor component in order to execute JavaScript within 
             // the WebView environment to retrieve data (even though this Monaco class is static).
+#if WINDOWS_UWP
+            _editor = new System.WeakReference<CodeEditor>(editor);
+#else
             _editor = new WinRT.WeakReference<CodeEditor>(editor);
+#endif
         }
 
         public IAsyncOperation<IList<ILanguageExtensionPoint>> GetLanguagesAsync()

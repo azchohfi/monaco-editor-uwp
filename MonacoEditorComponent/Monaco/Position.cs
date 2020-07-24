@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.UI.Xaml;
+using Newtonsoft.Json;
 using System;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
@@ -46,7 +47,11 @@ namespace Monaco
 
         public override int GetHashCode()
         {
+#if WINDOWS_UWP
+            return PointHelper.FromCoordinates(LineNumber, Column).GetHashCode();
+#else
             return new Point(LineNumber, Column).GetHashCode();
+#endif
         }
 
         public override string ToString()

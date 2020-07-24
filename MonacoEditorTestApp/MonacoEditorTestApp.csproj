@@ -16,9 +16,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Content.txt" />
+    <None Remove="Icons\error.png" />
+    <None Remove="Icons\warning.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content.txt" />
+    <Content Include="Icons\error.png" />
+    <Content Include="Icons\warning.png" />
   </ItemGroup>
 
   <ItemGroup>

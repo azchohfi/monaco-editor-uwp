@@ -20,11 +20,19 @@ namespace Monaco.Helpers
     [AllowForWeb]
     public sealed class KeyboardListener
     {
+#if WINDOWS_UWP
+        private readonly System.WeakReference<CodeEditor> parent;
+#else
         private readonly WinRT.WeakReference<CodeEditor> parent;
+#endif
 
         public KeyboardListener(CodeEditor parent) // TODO: Make Interface for event usage
         {
+#if WINDOWS_UWP
+            this.parent = new System.WeakReference<CodeEditor>(parent);
+#else
             this.parent = new WinRT.WeakReference<CodeEditor>(parent);
+#endif
         }
 
         /// <summary>
